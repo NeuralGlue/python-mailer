@@ -11,7 +11,7 @@ CSV_RETRY_FILENAME = '/tmp/pymailer.csv'
 STATS_FILE = '/tmp/pymailer-%s.stat' % str(datetime.now()).replace(' ', '-').replace(':', '-').replace('.', '-')
 
 # smtp settings
-SMTP_HOST = 'augur.evergreenecon.com'
+SMTP_HOST = 'mail.example.com'
 SMTP_PORT = '587'
 
 # the address and name the email comes from
