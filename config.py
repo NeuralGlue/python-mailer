@@ -11,14 +11,16 @@ CSV_RETRY_FILENAME = '/tmp/pymailer.csv'
 STATS_FILE = '/tmp/pymailer-%s.stat' % str(datetime.now()).replace(' ', '-').replace(':', '-').replace('.', '-')
 
 # smtp settings
-SMTP_HOST = 'localhost'
-SMTP_PORT = '25'
+SMTP_HOST = 'augur.evergreenecon.com'
+SMTP_PORT = '587'
 
 # the address and name the email comes from
-FROM_NAME = 'Company Name'
-FROM_EMAIL = 'company@example.com'
+FROM_NAME = 'Test User'
+FROM_EMAIL = 'from@example.com'
+AUTH_USER="username"
+PASSWORD="password"
 
 # test recipients list
 TEST_RECIPIENTS = [
-    {'name': 'Name', 'email': 'someone@example.com'},
+    {'name': 'test', 'email': 'test@example.com'},
 ]

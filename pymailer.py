@@ -66,7 +66,7 @@ class PyMailer():
         Validate the supplied email address.
         """
         if not email_address or len(email_address) < 5:
-            print 1
+            print(1)
             return None
         if not re.match(r'^[a-zA-Z0-9._%-+]+@[a-zA-Z0-9._%-]+.[a-zA-Z]{2,6}$', email_address):
             return None
@@ -154,7 +154,7 @@ class PyMailer():
                 recipient_name = ''
                 recipient_email = None
 
-            print recipient_name, recipient_email
+            print(recipient_name, recipient_email)
 
             # log missing email addresses and line number
             if not recipient_email:
@@ -202,6 +202,10 @@ class PyMailer():
             # send the actual email
             smtp_server = smtplib.SMTP(host=config.SMTP_HOST, port=config.SMTP_PORT)
             try:
+                smtp_server.ehlo()
+                smtp_server.starttls()
+                smtp_server.ehlo()
+                smtp_server.login(config.AUTH_USER, config.PASSWORD)
                 smtp_server.sendmail(sender, recipient, message)
 
                 # save the last recipient to the stats file incase the process fails
@@ -241,15 +245,15 @@ def main(sys_args):
     try:
         action, html_path, csv_path, subject = sys_args
     except ValueError:
-        print "Not enough argumants supplied. PyMailer requests 1 option and 3 arguments: ./pymailer -s html_path csv_path subject"
+        print("Not enough argumants supplied. PyMailer requests 1 option and 3 arguments: ./pymailer -s html_path csv_path subject")
         sys.exit()
 
     if os.path.splitext(html_path)[1] != '.html':
-        print "The html_path argument doesn't seem to contain a valid html file."
+        print("The html_path argument doesn't seem to contain a valid html file.")
         sys.exit()
 
     if os.path.splitext(csv_path)[1] != '.csv':
-        print "The csv_path argument doesn't seem to contain a valid csv file."
+        print("The csv_path argument doesn't seem to contain a valid csv file.")
         sys.exit()
 
     pymailer = PyMailer(html_path, csv_path, subject)
@@ -261,20 +265,20 @@ def main(sys_args):
 
             # send the email and try resend to failed recipients
             pymailer.send()
-            pymailer.resend_failed()
+            #pymailer.resend_failed()
         else:
-            print "Aborted."
+            print("Aborted.")
             sys.exit()
 
     elif action == '-t':
         if raw_input("You are about to send a test mail to all recipients as specified in config.py. Do you want to continue (yes/no)? ") == 'yes':
             pymailer.send_test()
         else:
-            print "Aborted."
+            print("Aborted.")
             sys.exit()
 
     else:
-        print "%s option is not support. Use either [-s] to send to all recipients or [-t] to send to test recipients" % action
+        print("%s option is not support. Use either [-s] to send to all recipients or [-t] to send to test recipients" % action)
 
     # save the end time to the stats file
     pymailer._stats("END TIME: %s" % datetime.now())
